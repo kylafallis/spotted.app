@@ -3,55 +3,53 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>OSU Study Spots</title>
+    <title>Spotted</title>
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body>
 
-    <div class="main-content">
-        <div id="map-page" class="page active">
+    <div id="intro-page" class="page active">
+        <div class="intro-content">
+            <h1 class="logo">spotted.</h1>
+            <button id="discover-btn" class="main-btn">Discover</button>
+        </div>
+    </div>
+
+    <div id="app-container" class="page">
+        <div class="navbar">
+            <button class="nav-btn active" data-page="map-page">Map</button>
+            <button class="nav-btn" data-page="list-page">List</button>
+            <button class="nav-btn" data-page="account-page">Account</button>
+        </div>
+        
+        <div id="map-page" class="app-page active">
             <div id="map"></div>
         </div>
 
-        <div id="list-page" class="page">
-            <div id="list-container">
+        <div id="list-page" class="app-page">
+            <div class="content-container">
                 <h2>All Study Spots</h2>
                 <ul id="spot-list"></ul>
             </div>
         </div>
 
-        <div id="account-page" class="page">
-            <div class="account-section" id="google-signin-container">
-                <h2>Sign In</h2>
-                <div id="g_id_onload" data-client_id="YOUR_GOOGLE_CLIENT_ID" data-callback="handleCredentialResponse"></div>
-                <div class="g_id_signin" data-type="standard"></div>
-            </div>
-            
-            <div class="account-section hidden" id="user-info-container">
-                <h2>Welcome, <span id="user-name"></span></h2>
-                <p>Add and manage your favorite spots here!</p>
-                <div id="favorites-list"></div>
-            </div>
-
-            <div class="account-section">
-                <h2>Request a New Spot</h2>
-                <p>Fill out the form below to suggest a new study spot.</p>
+        <div id="account-page" class="app-page">
+            <div class="content-container">
+                <h2>Account</h2>
+                <p>Sign in to save favorites and more.</p>
+                <button class="main-btn">Sign in with Google</button>
+                <div class="divider"></div>
+                <h2>Suggest a New Spot</h2>
                 <form id="request-form">
                     <input type="text" id="request-name" placeholder="Spot Name" required>
                     <textarea id="request-description" placeholder="Description" required></textarea>
-                    <button type="submit">Submit Request</button>
+                    <button type="submit" class="main-btn">Submit Request</button>
                 </form>
             </div>
         </div>
     </div>
-
-    <div class="navbar">
-        <button class="nav-btn active" data-page="map-page"><i class="fas fa-map"></i> Map</button>
-        <button class="nav-btn" data-page="list-page"><i class="fas fa-list"></i> List</button>
-        <button class="nav-btn" data-page="account-page"><i class="fas fa-user"></i> Account</button>
-    </div>
-
+    
     <script src="script.js"></script>
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD5IIVpZ9IJ1fUkTgKIdwakqy9O0CxgiEg&callback=initMap" defer></script>
     <script src="https://accounts.google.com/gsi/client" async defer></script>
