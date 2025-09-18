@@ -29,7 +29,13 @@
 
         <div id="list-page" class="app-page">
             <div class="content-container">
-                <h2>All Study Spots</h2>
+                <div id="filter-buttons">
+                    <button class="filter-btn active" data-filter="all">All</button>
+                    <button class="filter-btn" data-filter="library">Libraries</button>
+                    <button class="filter-btn" data-filter="cafe">Cafes</button>
+                    <button class="filter-btn" data-filter="outdoor">Outdoor</button>
+                    <button class="filter-btn" data-filter="my-spots">My Spots</button>
+                </div>
                 <ul id="spot-list"></ul>
             </div>
         </div>
@@ -41,15 +47,16 @@
                 <button class="main-btn">Sign in with Google</button>
                 <div class="divider"></div>
                 <h2>Suggest a New Spot</h2>
+                <p>Click on a spot on the map and use the "Add Spot" option to add it to "My Spots".</p>
                 <form id="request-form">
                     <input type="text" id="request-name" placeholder="Spot Name" required>
                     <textarea id="request-description" placeholder="Description" required></textarea>
-                    <button type="submit" class="main-btn">Submit Request</button>
+                    <button type="submit" class="main-btn">Submit to Public List</button>
                 </form>
             </div>
         </div>
     </div>
-    
+
     <script src="script.js"></script>
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD5IIVpZ9IJ1fUkTgKIdwakqy9O0CxgiEg&callback=initMap" defer></script>
     <script src="https://accounts.google.com/gsi/client" async defer></script>
