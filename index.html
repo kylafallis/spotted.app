@@ -9,18 +9,52 @@
 </head>
 <body>
 
-    <div id="map"></div>
+    <div class="main-content">
+        <div id="map-page" class="page active">
+            <div id="map"></div>
+        </div>
 
-    <div class="controls-container">
-        <button class="toggle-btn active" data-type="all">All</button>
-        <button class="toggle-btn" data-type="cafe">Cafes</button>
-        <button class="toggle-btn" data-type="library">Libraries</button>
-        <button class="toggle-btn" data-type="outdoor">Outdoor</button>
-        <button class="toggle-btn" data-type="major">Major-Specific</button>
+        <div id="list-page" class="page">
+            <div id="list-container">
+                <h2>All Study Spots</h2>
+                <ul id="spot-list"></ul>
+            </div>
+        </div>
+
+        <div id="account-page" class="page">
+            <div class="account-section" id="google-signin-container">
+                <h2>Sign In</h2>
+                <div id="g_id_onload" data-client_id="YOUR_GOOGLE_CLIENT_ID" data-callback="handleCredentialResponse"></div>
+                <div class="g_id_signin" data-type="standard"></div>
+            </div>
+            
+            <div class="account-section hidden" id="user-info-container">
+                <h2>Welcome, <span id="user-name"></span></h2>
+                <p>Add and manage your favorite spots here!</p>
+                <div id="favorites-list"></div>
+            </div>
+
+            <div class="account-section">
+                <h2>Request a New Spot</h2>
+                <p>Fill out the form below to suggest a new study spot.</p>
+                <form id="request-form">
+                    <input type="text" id="request-name" placeholder="Spot Name" required>
+                    <textarea id="request-description" placeholder="Description" required></textarea>
+                    <button type="submit">Submit Request</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="navbar">
+        <button class="nav-btn active" data-page="map-page"><i class="fas fa-map"></i> Map</button>
+        <button class="nav-btn" data-page="list-page"><i class="fas fa-list"></i> List</button>
+        <button class="nav-btn" data-page="account-page"><i class="fas fa-user"></i> Account</button>
     </div>
 
     <script src="script.js"></script>
-    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD5IIVpZ9IJ1fUkTgKIdwakqy9O0CxgiEg&callback=initMap"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD5IIVpZ9IJ1fUkTgKIdwakqy9O0CxgiEg&callback=initMap" defer></script>
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
 
 </body>
 </html>
