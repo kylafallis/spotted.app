@@ -1,87 +1,136 @@
+:root {
+    --primary-color: #00796B; /* Dark teal-green */
+    --secondary-color: #4CAF50; /* A brighter green */
+    --background-color: #F8F9FA;
+    --text-color: #212121;
+    --divider-color: #E0E0E0;
+}
+
 body {
     margin: 0;
     padding: 0;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background-color: #F8F9FA;
-    color: #333;
-}
-
-#map {
-    height: 100vh;
-    width: 100%;
-}
-
-.main-content {
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh;
-    padding-bottom: 60px; /* Space for navbar */
+    background-color: var(--background-color);
+    color: var(--text-color);
+    overflow: hidden;
 }
 
 .page {
-    display: none;
-    padding: 20px;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    position: absolute;
+    top: 0;
+    left: 0;
+    transition: transform 1s ease-in-out;
 }
 
-.page.active {
-    display: block;
+#intro-page {
+    z-index: 10;
+    background-color: var(--primary-color);
+    color: var(--background-color);
 }
 
-/* Navbar styles */
+#intro-page.hidden {
+    transform: translateY(-100%);
+}
+
+.intro-content {
+    text-align: center;
+    animation: fadeIn 1s ease-in-out;
+}
+
+.logo {
+    font-size: 4rem;
+    font-weight: 300;
+    letter-spacing: 2px;
+}
+
+.main-btn {
+    background-color: var(--background-color);
+    color: var(--primary-color);
+    border: none;
+    padding: 15px 30px;
+    font-size: 1.2rem;
+    font-weight: bold;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: transform 0.3s ease-in-out;
+}
+
+.main-btn:hover {
+    transform: scale(1.05);
+}
+
+#app-container {
+    transform: translateY(100%);
+    z-index: 5;
+    background-color: var(--background-color);
+}
+
+#app-container.active {
+    transform: translateY(0);
+}
+
 .navbar {
     position: fixed;
-    bottom: 0;
+    top: 0;
     left: 0;
     width: 100%;
     height: 60px;
     display: flex;
     justify-content: space-around;
     align-items: center;
-    background-color: #E6F3F7; /* A light, airy blue-green */
-    border-top: 1px solid #C3E4E9;
-    box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
+    background-color: var(--background-color);
+    border-bottom: 1px solid var(--divider-color);
+    z-index: 10;
 }
 
 .nav-btn {
-    flex: 1;
-    height: 100%;
     border: none;
     background: none;
-    font-size: 14px;
-    color: #4CAF50; /* Primary green */
-    transition: color 0.3s, background-color 0.3s;
+    font-size: 1rem;
+    color: #757575;
+    cursor: pointer;
+    transition: color 0.3s;
 }
 
 .nav-btn.active {
-    color: #00796B; /* A darker, teal-green */
-    background-color: #B2DFDB;
+    color: var(--primary-color);
+    font-weight: bold;
 }
 
-.nav-btn i {
-    font-size: 20px;
-    margin-bottom: 5px;
-}
-
-/* List and Account Page Styles */
-#list-container, .account-section {
-    background-color: #FFFFFF;
-    border-radius: 10px;
-    padding: 20px;
-    margin-bottom: 20px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
-}
-
-#spot-list li {
-    list-style: none;
-    padding: 15px;
-    border-bottom: 1px solid #eee;
-    cursor: pointer;
-}
-
-#spot-list li:hover {
-    background-color: #F0F0F0;
-}
-
-.hidden {
+.app-page {
     display: none;
+    padding-top: 60px; /* Space for navbar */
+    width: 100%;
+    height: 100%;
+    overflow-y: auto;
+}
+
+.app-page.active {
+    display: block;
+}
+
+#map {
+    height: 100%;
+    width: 100%;
+}
+
+.content-container {
+    padding: 20px 5vw;
+}
+
+.divider {
+    height: 1px;
+    background-color: var(--divider-color);
+    margin: 20px 0;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
 }
