@@ -2,17 +2,19 @@ let map;
 let markers = [];
 
 const allLocations = [
-    // Libraries
-    { name: "Thompson Library", lat: 40.0003, lng: -83.0145, type: "library", icon: "https://maps.gstatic.com/mapfiles/ms/micons/red-dot.png" },
-    { name: "18th Avenue Library", lat: 39.9984, lng: -83.0116, type: "library", icon: "https://maps.gstatic.com/mapfiles/ms/micons/red-dot.png" },
-    { name: "Sullivant Hall Library", lat: 39.9985, lng: -83.0132, type: "library", icon: "https://maps.gstatic.com/mapfiles/ms/micons/red-dot.png" },
-    // Cafes
-    { name: "Berry Cafe", lat: 40.0022, lng: -83.0111, type: "cafe", icon: "https://maps.gstatic.com/mapfiles/ms/micons/blue-dot.png" },
-    { name: "Connecting Grounds", lat: 39.9997, lng: -83.0105, type: "cafe", icon: "https://maps.gstatic.com/mapfiles/ms/micons/blue-dot.png" },
-    { name: "Oxley's by the Numbers", lat: 40.0044, lng: -83.0135, type: "cafe", icon: "https://maps.gstatic.com/mapfiles/ms/micons/blue-dot.png" },
+    // Libraries - Corrected locations and icons
+    { name: "Thompson Library", lat: 40.00032, lng: -83.01456, type: "library", icon: "https://cdn.rawgit.com/googlemaps/js-marker-clusterer/gh-pages/images/m1.png" },
+    { name: "18th Avenue Library", lat: 39.99849, lng: -83.01161, type: "library", icon: "https://cdn.rawgit.com/googlemaps/js-marker-clusterer/gh-pages/images/m1.png" },
+    { name: "Sullivant Hall Library", lat: 39.9985, lng: -83.0132, type: "library", icon: "https://cdn.rawgit.com/googlemaps/js-marker-clusterer/gh-pages/images/m1.png" },
+    // Cafes - Corrected locations and icons
+    { name: "Berry Cafe", lat: 40.0022, lng: -83.0111, type: "cafe", icon: "https://cdn.rawgit.com/googlemaps/js-marker-clusterer/gh-pages/images/m2.png" },
+    { name: "Connecting Grounds", lat: 39.9997, lng: -83.0105, type: "cafe", icon: "https://cdn.rawgit.com/googlemaps/js-marker-clusterer/gh-pages/images/m2.png" },
+    { name: "Oxley's by the Numbers", lat: 40.0044, lng: -83.0135, type: "cafe", icon: "https://cdn.rawgit.com/googlemaps/js-marker-clusterer/gh-pages/images/m2.png" },
+    { name: "Curl Market", lat: 40.0019, lng: -83.0076, type: "cafe", icon: "https://cdn.rawgit.com/googlemaps/js-marker-clusterer/gh-pages/images/m2.png" },
     // Outdoor Spots
-    { name: "The Oval", lat: 40.0016, lng: -83.0140, type: "outdoor", icon: "https://maps.gstatic.com/mapfiles/ms/micons/green-dot.png" },
-    { name: "RPAC Patio", lat: 39.9972, lng: -83.0179, type: "outdoor", icon: "https://maps.gstatic.com/mapfiles/ms/micons/green-dot.png" },
+    { name: "The Oval", lat: 40.0016, lng: -83.0140, type: "outdoor", icon: "https://cdn.rawgit.com/googlemaps/js-marker-clusterer/gh-pages/images/m3.png" },
+    { name: "RPAC Patio", lat: 39.9972, lng: -83.0179, type: "outdoor", icon: "https://cdn.rawgit.com/googlemaps/js-marker-clusterer/gh-pages/images/m3.png" },
+    // You can add more locations here
 ];
 
 function initMap() {
@@ -20,8 +22,8 @@ function initMap() {
         center: { lat: 39.9992, lng: -83.0084 },
         zoom: 16,
         styles: [
-            { "featureType": "water", "elementType": "geometry", "stylers": [{ "color": "#A8C0D9" }] },
-            { "featureType": "landscape", "stylers": [{ "color": "#D9E8D4" }] },
+            { "featureType": "water", "elementType": "geometry", "stylers": [{ "color": "#a8c0d9" }] },
+            { "featureType": "landscape", "stylers": [{ "color": "#d9e8d4" }] },
         ],
     });
 
@@ -57,12 +59,11 @@ function plotLocations(locationsToPlot) {
 
 function populateList(locationsToList) {
     const list = document.getElementById('spot-list');
-    list.innerHTML = ''; // Clear previous list
+    list.innerHTML = '';
     locationsToList.forEach(location => {
         const listItem = document.createElement('li');
         listItem.textContent = location.name;
         listItem.addEventListener('click', () => {
-            // Find marker and open infowindow
             const marker = markers.find(m => m.getTitle() === location.name);
             if (marker) {
                 map.setCenter(marker.getPosition());
@@ -73,14 +74,18 @@ function populateList(locationsToList) {
     });
 }
 
+// Page Transition Logic
+document.getElementById('discover-btn').addEventListener('click', () => {
+    document.getElementById('intro-page').classList.add('hidden');
+    document.getElementById('app-container').classList.add('active');
+});
+
 // Navigation Bar Logic
 document.querySelectorAll('.nav-btn').forEach(button => {
     button.addEventListener('click', () => {
-        // Hide all pages and remove active class from all buttons
-        document.querySelectorAll('.page').forEach(page => page.classList.remove('active'));
+        document.querySelectorAll('.app-page').forEach(page => page.classList.remove('active'));
         document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
 
-        // Show the selected page and add active class to the clicked button
         const pageId = button.getAttribute('data-page');
         document.getElementById(pageId).classList.add('active');
         button.classList.add('active');
@@ -96,15 +101,5 @@ document.getElementById('request-form').addEventListener('submit', (e) => {
     const emailBody = encodeURIComponent(`Spot Name: ${name}\n\nDescription: ${description}\n\nThis is a request to add a new study spot to the app.`);
     
     // Replace YOUR_EMAIL@gmail.com with your actual email
-    window.location.href = `mailto:YOUR_EMAIL@gmail.com?subject=${emailSubject}&body=${emailBody}`;
+    window.location.href = `mailto:kylakayf@gmail.com?subject=${emailSubject}&body=${emailBody}`;
 });
-
-// Important: For Google Sign-In, you need to set up Firebase Authentication.
-// The provided HTML includes a placeholder for a Google Client ID. 
-// This is not a simple copy-paste solution. You will need to follow these steps:
-// 1. Create a Firebase project.
-// 2. Enable Google Sign-In in Firebase Authentication settings.
-// 3. Get your Web client ID and paste it into the data-client_id attribute in index.html.
-// 4. Implement a full back-end handler for the authentication callback.
-// The "handleCredentialResponse" function is a placeholder and would require a Firebase setup. 
-// For a simple demo, you can remove the Google Sign-in section from the HTML.
