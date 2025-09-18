@@ -1,20 +1,13 @@
 let map;
 let markers = [];
+let userSpots = []; // This array will store the user's spots
 
 const allLocations = [
-    // Libraries - Corrected locations and icons
-    { name: "Thompson Library", lat: 40.00032, lng: -83.01456, type: "library", icon: "https://cdn.rawgit.com/googlemaps/js-marker-clusterer/gh-pages/images/m1.png" },
-    { name: "18th Avenue Library", lat: 39.99849, lng: -83.01161, type: "library", icon: "https://cdn.rawgit.com/googlemaps/js-marker-clusterer/gh-pages/images/m1.png" },
-    { name: "Sullivant Hall Library", lat: 39.9985, lng: -83.0132, type: "library", icon: "https://cdn.rawgit.com/googlemaps/js-marker-clusterer/gh-pages/images/m1.png" },
-    // Cafes - Corrected locations and icons
-    { name: "Berry Cafe", lat: 40.0022, lng: -83.0111, type: "cafe", icon: "https://cdn.rawgit.com/googlemaps/js-marker-clusterer/gh-pages/images/m2.png" },
-    { name: "Connecting Grounds", lat: 39.9997, lng: -83.0105, type: "cafe", icon: "https://cdn.rawgit.com/googlemaps/js-marker-clusterer/gh-pages/images/m2.png" },
-    { name: "Oxley's by the Numbers", lat: 40.0044, lng: -83.0135, type: "cafe", icon: "https://cdn.rawgit.com/googlemaps/js-marker-clusterer/gh-pages/images/m2.png" },
-    { name: "Curl Market", lat: 40.0019, lng: -83.0076, type: "cafe", icon: "https://cdn.rawgit.com/googlemaps/js-marker-clusterer/gh-pages/images/m2.png" },
-    // Outdoor Spots
-    { name: "The Oval", lat: 40.0016, lng: -83.0140, type: "outdoor", icon: "https://cdn.rawgit.com/googlemaps/js-marker-clusterer/gh-pages/images/m3.png" },
-    { name: "RPAC Patio", lat: 39.9972, lng: -83.0179, type: "outdoor", icon: "https://cdn.rawgit.com/googlemaps/js-marker-clusterer/gh-pages/images/m3.png" },
-    // You can add more locations here
+    { name: "Thompson Library", lat: 40.00032, lng: -83.01456, type: "library" },
+    { name: "18th Avenue Library", lat: 39.99849, lng: -83.01161, type: "library" },
+    { name: "Berry Cafe", lat: 40.0022, lng: -83.0111, type: "cafe" },
+    { name: "The Oval", lat: 40.0016, lng: -83.0140, type: "outdoor" },
+    // Add more locations here...
 ];
 
 function initMap() {
@@ -27,20 +20,41 @@ function initMap() {
         ],
     });
 
+    // Add a click listener to the map to allow users to add spots
+    map.addListener('click', (event) => {
+        const confirmAdd = confirm("Add a new spot here?");
+        if (confirmAdd) {
+            const spotName = prompt("Enter a name for your spot:");
+            if (spotName) {
+                const newSpot = {
+                    name: spotName,
+                    lat: event.latLng.lat(),
+                    lng: event.latLng.lng(),
+                    type: "my-spot"
+                };
+                userSpots.push(newSpot); // Add the new spot to the userSpots array
+                plotLocations(allLocations.concat(userSpots)); // Plot all locations including the new one
+                populateList('all'); // Refresh the list view
+            }
+        }
+    });
+
     plotLocations(allLocations);
-    populateList(allLocations);
+    populateList('all');
 }
 
 function plotLocations(locationsToPlot) {
     markers.forEach(marker => marker.setMap(null));
     markers = [];
     locationsToPlot.forEach(location => {
+        // You'll need to create custom icons for a better look
+        const iconUrl = location.type === 'my-spot' ? 'https://maps.gstatic.com/mapfiles/ms/micons/pink-dot.png' : 'https://maps.gstatic.com/mapfiles/ms/micons/blue-dot.png';
         const marker = new google.maps.Marker({
             position: { lat: location.lat, lng: location.lng },
             map: map,
             title: location.name,
             icon: {
-                url: location.icon,
+                url: iconUrl,
                 scaledSize: new google.maps.Size(25, 25),
             },
         });
@@ -57,9 +71,19 @@ function plotLocations(locationsToPlot) {
     });
 }
 
-function populateList(locationsToList) {
+function populateList(filterType) {
     const list = document.getElementById('spot-list');
     list.innerHTML = '';
+    
+    let locationsToList = [];
+    if (filterType === 'my-spots') {
+        locationsToList = userSpots;
+    } else if (filterType === 'all') {
+        locationsToList = allLocations.concat(userSpots);
+    } else {
+        locationsToList = allLocations.filter(loc => loc.type === filterType);
+    }
+
     locationsToList.forEach(location => {
         const listItem = document.createElement('li');
         listItem.textContent = location.name;
@@ -89,17 +113,21 @@ document.querySelectorAll('.nav-btn').forEach(button => {
         const pageId = button.getAttribute('data-page');
         document.getElementById(pageId).classList.add('active');
         button.classList.add('active');
+        
+        // Populate the list based on the active filter when the list page is shown
+        if (pageId === 'list-page') {
+            const activeFilter = document.querySelector('.filter-btn.active').getAttribute('data-filter');
+            populateList(activeFilter);
+        }
     });
 });
 
-// Request Form Logic
-document.getElementById('request-form').addEventListener('submit', (e) => {
-    e.preventDefault();
-    const name = document.getElementById('request-name').value;
-    const description = document.getElementById('request-description').value;
-    const emailSubject = encodeURIComponent(`New Study Spot Request: ${name}`);
-    const emailBody = encodeURIComponent(`Spot Name: ${name}\n\nDescription: ${description}\n\nThis is a request to add a new study spot to the app.`);
-    
-    // Replace YOUR_EMAIL@gmail.com with your actual email
-    window.location.href = `mailto:kylakayf@gmail.com?subject=${emailSubject}&body=${emailBody}`;
+// Filter Button Logic on List Page
+document.querySelectorAll('.filter-btn').forEach(button => {
+    button.addEventListener('click', () => {
+        document.querySelector('.filter-btn.active').classList.remove('active');
+        button.classList.add('active');
+        const filterType = button.getAttribute('data-filter');
+        populateList(filterType);
+    });
 });
